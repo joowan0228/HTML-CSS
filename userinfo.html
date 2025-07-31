@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>사용자 정보 출력</title>
+</head>
+<body style="background-color: #f0f0f0; font-family: Arial, sans-serif; padding: 20px;">
+
+  <h2 style="color: #333;">사용자 정보 입력받고 출력하기</h2>
+
+  <div id="resultBox" style="background-color: white; border: 1px solid #ccc; padding: 15px; margin-top: 20px;">
+    <p style="color: #888;">아래에 정보가 표시됩니다.</p>
+  </div>
+
+  <script>
+    const message = "정보를 출력합니다.";
+    console.log(message);
+
+    let name = prompt("당신의 이름은?");
+    let age = prompt("당신의 나이는?");
+    let job = prompt("당신의 직업은?");
+
+    if (name === null || name.trim() === "") {
+      name = "(이름 없음)";
+    }
+
+    if (age === null || age.trim() === "") {
+      age = "(나이 없음)";
+    }
+
+    if (job === null || job.trim() === "") {
+      job = "(직업 없음)";
+    }
+
+    console.log("이름:", name);
+    console.log("나이:", age);
+    console.log("직업:", job);
+
+    let resultHTML = `
+      <p style="font-weight: bold;">입력된 정보:</p>
+      <ul style="padding-left: 20px;">
+        <li>이름: ${name}</li>
+        <li>나이: ${age}</li>
+        <li>직업: ${job}</li>
+      </ul>
+    `;
+
+    document.getElementById("resultBox").innerHTML = resultHTML;
+  </script>
+
+</body>
+</html>
