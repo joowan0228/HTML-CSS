@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>마인크래프트 설문조사</title>
+</head>
+<body>
+    <header>
+        <h1>마인크래프트 설문조사</h1>
+        <p>모든 항목에 빠짐없이 응답해 주세요.</p>
+    </header>
+    <hr>
+    <main>
+        <form>
+            <fieldset>
+                <legend>개인정보</legend>
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" placeholder="본명을 입력하세요">
+                <br>
+                <label for="email">이메일</label>
+                <input type="text" name="email" id="email" placeholder="이메일을 입력하세요">
+            </fieldset>
+
+            <fieldset>
+                <legend>설문</legend>
+
+                <p>마인크래프트를 플레이해본 경험이 있으신가요?</p>
+                <input type="radio" id="played_yes" name="played" value="yes">
+                <label for="played_yes">예</label>
+                <input type="radio" id="played_no" name="played" value="no">
+                <label for="played_no">아니요</label>
+
+                <p>가장 즐겨하는 모드는 무엇인가요?</p>
+                <input type="radio" id="survival" name="mode" value="survival">
+                <label for="survival">서바이벌</label>
+                <input type="radio" id="creative" name="mode" value="creative">
+                <label for="creative">크리에이티브</label>
+                <input type="radio" id="adventure" name="mode" value="adventure">
+                <label for="adventure">어드벤처</label>
+                <input type="radio" id="other_mode" name="mode" value="other">
+                <label for="other_mode">기타</label>
+
+                <p>마인크래프트에서 가장 중요하게 생각하는 요소는 무엇인가요? (복수 선택 가능)</p>
+                <input type="checkbox" id="graphics" name="important" value="graphics">
+                <label for="graphics">그래픽</label>
+                <input type="checkbox" id="freedom" name="important" value="freedom">
+                <label for="freedom">자유도</label>
+                <input type="checkbox" id="community" name="important" value="community">
+                <label for="community">커뮤니티</label>
+                <input type="checkbox" id="updates" name="important" value="updates">
+                <label for="updates">업데이트</label>
+                <input type="checkbox" id="mods" name="important" value="mods">
+                <label for="mods">모드</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>기타 의견</legend>
+                <textarea name="comment" rows="4" cols="40" placeholder="자유롭게 의견을 적어주세요"></textarea>
+            </fieldset>
+
+            <input type="submit" value="제출">
+        </form>
+    </main>
+    <hr>
+    <footer>
+        <p>설문에 응해주셔서 감사합니다!</p>
+    </footer>
+</body>
+</html>
