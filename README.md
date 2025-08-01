@@ -1,2 +1,2 @@
-# HTML-CSS
-HTML, CSS 학습 및 과제
+# HTML-CSS-JS
+HTML, CSS, JS 학습 및 과제
