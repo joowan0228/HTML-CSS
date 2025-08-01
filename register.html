@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>✅ 서버 회원가입</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url('https://images5.alphacoders.com/131/thumb-1920-1311254.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Courier New', monospace;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px 40px;
+      border: 5px solid #3e8e41;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 0 20px #3e8e41;
+    }
+
+    h2 {
+      text-align: center;
+      color: #aaffaa;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      color: #c0ffc0;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #3e8e41;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2e7031;
+    }
+
+    .result {
+      margin-top: 15px;
+      text-align: center;
+      color: #ffea8a;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>✅ 서버 회원가입</h2>
+    <label for="username">마인크래프트 닉네임</label>
+    <input type="text" id="username" placeholder="예: joowan0228">
+
+    <label for="email">이메일</label>
+    <input type="email" id="email" placeholder="예: joowan0228@block.com">
+
+    <label for="password">비밀번호</label>
+    <input type="password" id="password" placeholder="******">
+
+    <button onclick="submitForm()">가입하기</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function submitForm() {
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const result = document.getElementById("result");
+
+      if (validateForm(username, email, password)) {
+        result.textContent = `🎉 ${username}님, 서버 가입을 환영합니다!`;
+      } else {
+        result.textContent = "❌ 모든 항목을 입력해주세요.";
+      }
+    }
+
+    function validateForm(name, email, pw) {
+      return name !== "" && email !== "" && pw !== "";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>👾 몬스터 잡기 게임</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(to bottom right, #1f1f1f, #2a2a2a);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 { font-size: 2em; margin-bottom: 10px; }
+
+    #score-board {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    #score-board.animate {
+      transform: scale(1.4);
+    }
+
+    #time-board {
+      font-size: 1em;
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #game-area {
+      width: 600px;
+      height: 400px;
+      margin: 0 auto;
+      background-color: #111;
+      border: 4px solid #555;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .monster {
+      font-size: 40px;
+      position: absolute;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease;
+      animation: bounce 0.6s infinite alternate;
+    }
+
+    .monster:hover {
+      transform: scale(1.4);
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-5px); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>👾 몬스터 잡기 게임</h1>
+  <div id="score-board">점수: <span id="score">0</span></div>
+  <div id="time-board">남은 시간: <span id="time">15</span>초</div>
+  <button onclick="startGame()">게임 시작</button>
+  <div id="game-area"></div>
+
+  <script>
+    let score = 0;
+    let timeLeft = 15;
+    let gameInterval;
+    let timerInterval;
+    let spawnSpeed = 1000;
+    const gameArea = document.getElementById("game-area");
+    const scoreBoard = document.getElementById("score-board");
+    const monsterEmojis = ["👾", "👹", "💀", "👽", "😈"];
+    const bombEmoji = "💣";
+
+    function startGame() {
+      score = 0;
+      timeLeft = 15;
+      spawnSpeed = 1000;
+      document.getElementById("score").textContent = score;
+      document.getElementById("time").textContent = timeLeft;
+      gameArea.innerHTML = "";
+
+      clearInterval(gameInterval);
+      clearInterval(timerInterval);
+
+      spawnMonster();
+      gameInterval = setInterval(spawnMonster, spawnSpeed);
+      timerInterval = setInterval(updateTime, 1000);
+    }
+
+    function updateTime() {
+      timeLeft--;
+      document.getElementById("time").textContent = timeLeft;
+
+      if (timeLeft % 5 === 0 && spawnSpeed > 300) {
+        spawnSpeed -= 100;
+        clearInterval(gameInterval);
+        gameInterval = setInterval(spawnMonster, spawnSpeed);
+      }
+
+      if (timeLeft <= 0) {
+        clearInterval(gameInterval);
+        clearInterval(timerInterval);
+        alert("게임 종료! 최종 점수: " + score);
+      }
+    }
+
+    function spawnMonster() {
+      const monster = document.createElement("div");
+      monster.className = "monster";
+
+      const isBomb = Math.random() < 0.2;
+      monster.textContent = isBomb ? bombEmoji : monsterEmojis[Math.floor(Math.random() * monsterEmojis.length)];
+
+      const maxX = gameArea.clientWidth - 50;
+      const maxY = gameArea.clientHeight - 50;
+      monster.style.left = Math.random() * maxX + "px";
+      monster.style.top = Math.random() * maxY + "px";
+
+      monster.onclick = function () {
+        if (!isBomb) {
+          score++;
+        } else {
+          score = Math.max(0, score - 2);
+          alert("💣 폭탄 클릭! -2점");
+        }
+        document.getElementById("score").textContent = score;
+
+        // 점수판 애니메이션
+        scoreBoard.classList.add("animate");
+        setTimeout(() => {
+          scoreBoard.classList.remove("animate");
+        }, 200);
+
+        gameArea.removeChild(monster);
+      };
+
+      gameArea.appendChild(monster);
+
+      setTimeout(() => {
+        if (gameArea.contains(monster)) {
+          gameArea.removeChild(monster);
+        }
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
