@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Page</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+    @import url('https://fastly.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css');
+
+    body {
+      font-family: 'Galmuri9', 'Noto Sans KR', sans-serif;
+      background-color: #f2f0ff;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-top: 40px;
+    }
+    body.dark-mode .container {
+      background-color: #2c2c2c;
+    }
+    h3 {
+      color: #6c63ff;
+    }
+    .btn-primary {
+      background-color: #c7ceea;
+      border: none;
+      color: #333;
+    }
+    .btn-primary:hover {
+      background-color: #b2b8f2;
+    }
+    .table th {
+      background-color: #e7f7f5;
+      color: #555;
+    }
+    body.dark-mode .table th {
+      background-color: #3b3b3b;
+      color: #ddd;
+    }
+    .pagination .page-link {
+      background-color: #fcefee;
+      border: none;
+      color: #333;
+    }
+    body.dark-mode .pagination .page-link {
+      background-color: #444;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<style>
+@keyframes floatMove {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25%  { transform: translate(30px, -20px) scale(1.05) rotate(3deg); }
+  50%  { transform: translate(-30px, 30px) scale(0.95) rotate(-2deg); }
+  75%  { transform: translate(20px, 20px) scale(1.02) rotate(1deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+}
+.moving-icon {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.5;
+  width: 40px;
+  animation: floatMove 10s linear infinite;
+}
+body {
+  overflow: hidden;
+}
+</style>
+<script>
+(function(){
+  const icons = [
+    'https://static.wikia.nocookie.net/minecraft_gamepedia/images/a/ab/Diamond_JE3_BE3.png/revision/latest?cb=20230924193138',
+    'https://minecraft.wiki/images/Iron_Pickaxe_JE3_BE2.png?8a6ea'
+  ];
+  const count = 30;
+  for(let i = 0; i < count; i++){
+    const el = document.createElement('img');
+    el.src = icons[Math.floor(Math.random()*icons.length)];
+    el.className = 'moving-icon';
+    el.style.left = `${Math.random()*90}vw`;
+    el.style.top = `${Math.random()*90}vh`;
+    el.style.animationDelay = `-${Math.random()*10}s`;
+    document.body.appendChild(el);
+  }
+})();
+</script>
+<div class="container">
+<div class="d-flex justify-content-between align-items-center">
+<h3 class="mt-2 mb-4"><img alt="신규 등록 상품" src="https://static.wikia.nocookie.net/minecraft/images/b/b3/Chest.png/revision/latest/scale-to-width/360?cb=20191220013856" style="height: 1.9em; vertical-align: middle;"/> 신규 등록 상품</h3>
+<div>
+<span class="me-3" id="datetime"></span>
+<button class="btn btn-outline-secondary btn-sm" id="darkModeToggle"><img alt="다크모드" src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/3e/Clock_JE3_BE3.gif/revision/latest/thumbnail/width/360/height/360?cb=20201125194053" style="height: 1.9em; vertical-align: middle;"/> 다크모드</button>
+<a class="btn btn-primary btn-sm ms-2" href="signup.html" target="_blank"><img alt="회원가입" src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/b/b3/Compass_JE3_BE3.gif/revision/latest/thumbnail/width/360/height/450?cb=20201125191224" style="height: 1.9em; vertical-align: middle;"/> 회원가입</a>
+</div>
+</div>
+<form class="row row-cols-lg-auto g-3 align-items-center mt-2 mb-4">
+<div class="col-12">
+<select class="form-select" id="categoryFilter">
+<option selected="" value="">카테고리 선택</option>
+<option value="상의">상의</option>
+<option value="하의">하의</option>
+<option value="신발">신발</option>
+<option value="패션잡화">패션잡화</option>
+</select>
+</div>
+<div class="col-3">
+<input class="form-control" id="searchInput" placeholder="제품명을 입력해주세요" type="text"/>
+</div>
+<div class="col-2">
+<select class="form-select" id="genderFilter">
+<option selected="" value="">성별 선택</option>
+<option value="male">남성</option>
+<option value="female">여성</option>
+<option value="unisex">공용</option>
+</select>
+</div>
+<div class="col-auto">
+<button class="btn btn-success" id="searchBtn" type="button"><img alt="🔍" src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6f/Spyglass_%28item%29_JE3_BE1.png/revision/latest?cb=20210310162651" style="height: 1.4em; vertical-align: middle;"/> 조회</button>
+</div>
+</form>
+<table class="table table-bordered table-hover">
+<thead>
+<tr>
+<th>카테고리</th>
+<th>브랜드</th>
+<th>상품명</th>
+<th>가격</th>
+</tr>
+</thead>
+<tbody id="product_data_Table"></tbody>
+</table>
+<nav class="d-flex justify-content-center mt-3">
+<ul class="pagination" id="pagination"></ul>
+</nav>
+</div>
+<script>
+    const product_data = [
+      { category: "신발", brand: "Alex's Caves", product: '지각 부츠', price: '260,000', gender: 'male' },
+      { category: "상의", brand: 'Create', product: '골판지 후드티', price: '39,000', gender: 'female' },
+      { category: "상의", brand: "Biomes O' Plenty", product: '장미석영 티셔츠', price: '45,000', gender: 'female' },
+      { category: "하의", brand: 'Create', product: '디젤 팬츠', price: '18,000', gender: 'male' },
+      { category: "패션잡화", brand: "Alex's Mobs", product: '공허 벌레 키링', price: '29,000', gender: 'unisex' },
+      { category: "신발", brand: 'Create', product: '호박금 부츠', price: '137,000', gender: 'female' }
+    ];
+
+    const itemsPerPage = 3;
+    let currentPage = 1;
+
+    function renderTable(data) {
+      const tbody = document.getElementById('product_data_Table');
+      tbody.innerHTML = '';
+      const start = (currentPage - 1) * itemsPerPage;
+      const pageItems = data.slice(start, start + itemsPerPage);
+      pageItems.forEach(item => {
+        const row = tbody.insertRow();
+        row.insertCell(0).innerText = item.category;
+        row.insertCell(1).innerText = item.brand;
+        row.insertCell(2).innerText = item.product;
+        row.insertCell(3).innerText = item.price;
+      });
+    }
+
+    function renderPagination(data) {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+      const pageCount = Math.ceil(data.length / itemsPerPage);
+      for (let i = 1; i <= pageCount; i++) {
+        const li = document.createElement('li');
+        li.className = 'page-item' + (i === currentPage ? ' active' : '');
+        const a = document.createElement('a');
+        a.className = 'page-link';
+        a.href = '#';
+        a.innerText = i;
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentPage = i;
+          applyFilters();
+        });
+        li.appendChild(a);
+        pagination.appendChild(li);
+      }
+    }
+
+    function applyFilters() {
+      const category = document.getElementById('categoryFilter').value;
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const gender = document.getElementById('genderFilter').value;
+      let filtered = product_data.filter(item => {
+        return (!category || item.category === category) &&
+               (!search || item.product.toLowerCase().includes(search)) &&
+               (!gender || item.gender === gender);
+      });
+      renderTable(filtered);
+      renderPagination(filtered);
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      currentPage = 1;
+      applyFilters();
+    });
+
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    function updateDateTime() {
+      const now = new Date();
+      const formatted = now.toLocaleString("ko-KR", { hour12: false });
+      document.getElementById("datetime").textContent = formatted;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    applyFilters();
+  </script>
+</body>
+</html>
